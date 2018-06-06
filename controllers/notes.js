@@ -1,4 +1,4 @@
-// Controll for notes
+/*/ Controll for notes
 // =================
 
 var Note = require('../models/Note');
@@ -33,3 +33,4 @@ module.exports = {
         }, cb);
     }
 };
+*/

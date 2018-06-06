@@ -1,7 +1,7 @@
-//Bring in the scrapte and make date scripts
+//Bring in the scrape and make date scripts
 var scrape = require('../scripts/scrape');
 var makeDate = require('../scripts/date');
-var Headline = require('../models/Headlines');
+var Headline = require('../models/Headline');
 
 module.exports = {
     fetch: function (cb) {
@@ -27,7 +27,9 @@ module.exports = {
                 cb(doc);
             });
     },
-    udpate: function (query, cb) {
+    update: function (query, cb) {
         Headline.update({_id: query._id}, {}, cb);
+        console.log(articles);
     }
+
 }

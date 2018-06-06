@@ -10,11 +10,12 @@ router.get('/', function(req, res, next) {
 var scrape = require('../scripts/scrape');
 
 // Bring headlines and notes from the controller
-var headlinesController = require('../controllers/headlines');
+var headlinesController = require('../controllers/headline');
 var notesController = require('../controllers/notes');
 
 
 module.exports = router;
+
 
 
 /*
