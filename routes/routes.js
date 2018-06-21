@@ -4,7 +4,7 @@ var router = express.Router();
 var Article = require('../models/Article');
 var Note = require('../models/Note');
 
-app.get("/", function(req, res) {
+router.get("/", function(req, res) {
 	Article.find({}, null, {sort: {created: -1}}, function(err, data) {
 		if(data.length === 0) {
 			res.render("placeholder", {message: "There's nothing scraped yet. Please click \"Scrape For Newest Articles\" for fresh and delicious news."});
@@ -15,7 +15,7 @@ app.get("/", function(req, res) {
 	});
 });
 
-app.get("/scrape", function(req, res) {
+router.get("/scrape", function(req, res) {
 	request("https://www.nytimes.com/section/world", function(error, response, html) {
 		var $ = cheerio.load(html);
 		var result = {};
@@ -49,7 +49,7 @@ app.get("/scrape", function(req, res) {
 	});
 });
 
-app.get("/saved", function(req, res) {
+router.get("/saved", function(req, res) {
 	Article.find({issaved: true}, null, {sort: {created: -1}}, function(err, data) {
 		if(data.length === 0) {
 			res.render("placeholder", {message: "You have not saved any articles yet. Try to save some delicious news by simply clicking \"Save Article\"!"});
@@ -60,13 +60,13 @@ app.get("/saved", function(req, res) {
 	});
 });
 
-app.get("/:id", function(req, res) {
+router.get("/:id", function(req, res) {
 	Article.findById(req.params.id, function(err, data) {
 		res.json(data);
 	})
 })
 
-app.post("/search", function(req, res) {
+router.post("/search", function(req, res) {
 	console.log(req.body.search);
 	Article.find({$text: {$search: req.body.search, $caseSensitive: false}}, null, {sort: {created: -1}}, function(err, data) {
 		console.log(data);
@@ -79,7 +79,7 @@ app.post("/search", function(req, res) {
 	})
 });
 
-app.post("/save/:id", function(req, res) {
+router.post("/save/:id", function(req, res) {
 	Article.findById(req.params.id, function(err, data) {
 		if (data.issaved) {
 			Article.findByIdAndUpdate(req.params.id, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
@@ -94,7 +94,7 @@ app.post("/save/:id", function(req, res) {
 	});
 });
 
-app.post("/note/:id", function(req, res) {
+router.post("/note/:id", function(req, res) {
 	var note = new Note(req.body);
 	note.save(function(err, doc) {
 		if (err) throw err;
@@ -107,7 +107,7 @@ app.post("/note/:id", function(req, res) {
 	});
 });
 
-app.get("/note/:id", function(req, res) {
+router.get("/note/:id", function(req, res) {
 	var id = req.params.id;
 	Article.findById(id).populate("note").exec(function(err, data) {
 		res.send(data.note);

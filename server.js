@@ -16,6 +16,7 @@ var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
 var dotenv = require('dotenv').config();
 
+var indexRouter = require('./routes/routes');
 
 // Mongoose Models
 
@@ -49,5 +50,6 @@ app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', '.hbs');
 
+app.use('/', indexRouter);
 
 module.exports = app;
